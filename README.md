@@ -7,9 +7,11 @@
 FarmTrack is a farm management web app that lets farmers organize their animals into structures (barns, stables, coops, etc.) and keep a history log for each animal, tracking health status, sales, and other events over time. Built as a MEN stack CRUD app (MongoDB, Express, Node, EJS) with session-based authentication. Each user only has access to their own farm data.
 ## ScreenShots
 
-<img width="1917" height="876" alt="Welcome page Screenshots" src="https://github.com/user-attachments/assets/3ea6bdee-be72-42a6-b88a-d8a19e3f5835" />
+<img width="1917" height="876" alt="Welcome page Screenshots" src="https://github.com/user-attachments/assets/d91c39d7-5063-4ede-b337-866037bc0891" />
 
-<img width="1917" height="862" alt="In the site Screenshots" src="https://github.com/user-attachments/assets/ff9c792e-3b0d-489b-83ee-775cce260651" />
+
+<img width="1917" height="862" alt="In the site Screenshots" src="https://github.com/user-attachments/assets/46b71de6-2da2-47b7-ae9d-d41bc0e51301" />
+
 
 
 
@@ -46,12 +48,13 @@ FarmTrack is a farm management web app that lets farmers organize their animals 
 
 ## ERD
 
-<img width="825" height="650" alt="erd" src="https://github.com/user-attachments/assets/bbb62ccf-84e3-4ea9-9a0c-8a636745226a" />
+<img width="825" height="650" alt="erd" src="https://github.com/user-attachments/assets/7d3ca613-55fc-4381-a4bd-976f9454ee27" />
+
 
 
 ## Wireframes
+<img width="1392" height="842" alt="wireframe" src="https://github.com/user-attachments/assets/c9ab9aee-aa12-4fc6-b9b9-8ec306570990" />
 
-<img width="1392" height="842" alt="wireframe" src="https://github.com/user-attachments/assets/89b0c29a-b42a-4dc2-97b2-c79052e758db" />
 
 ## Technologies
 

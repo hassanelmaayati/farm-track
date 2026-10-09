@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #f6f5ef;
+  --card: #ffffff;
+  --soft: #eef3e8;
+  --line: #e2dfd0;
+  --ink: #1f2a1f;
+  --muted: #5f6b5d;
+  --brand: #2f7d32;
+  --brand-hover: #276a2a;
+  --brand-ink: #ffffff;
+  --accent: #c58b1a;
+}
+
+.dark {
+  --bg: #111610;
+  --card: #1a221a;
+  --soft: #232e22;
+  --line: #2c382b;
+  --ink: #e9efe6;
+  --muted: #9aa897;
+  --brand: #5fb35f;
+  --brand-hover: #73c473;
+  --brand-ink: #0c140c;
+  --accent: #e0a93b;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-card: var(--card);
+  --color-soft: var(--soft);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-brand: var(--brand);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-ink: var(--brand-ink);
+  --color-accent: var(--accent);
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+}
+
+/* ---- print-friendly layout: hide chrome, drop the dark theme ---- */
+@media print {
+  :root,
+  .dark {
+    --bg: #fff;
+    --card: #fff;
+    --soft: #f3f3f3;
+    --line: #cfcfcf;
+    --ink: #000;
+    --muted: #444;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-full {
+    margin: 0 !important;
+    padding: 0 !important;
+    max-width: none !important;
+  }
+  .print-card {
+    box-shadow: none !important;
+    break-inside: avoid;
+  }
+  table {
+    font-size: 11px;
+  }
+  tr {
+    break-inside: avoid;
+  }
+}

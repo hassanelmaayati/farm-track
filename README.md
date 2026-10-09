@@ -4,7 +4,9 @@
 [![Live Demo](https://img.shields.io/badge/Live_Demo-FarmTrack-brightgreen?style=for-the-badge&logo=render)](https://farmtrack-36ld.onrender.com/)
 
 
-FarmTrack is a farm management web app that lets farmers organize their animals into structures (barns, stables, coops, etc.) and keep a history log for each animal, tracking health status, sales, and other events over time. Built as a MEN stack CRUD app (MongoDB, Express, Node, EJS) with session-based authentication. Each user only has access to their own farm data.
+FarmTrack is a farm management web app that lets farmers organize their animals into structures (barns, stables, coops, etc.) and keep a history log for each animal, tracking health status, sales, and other events over time. Built as a MERN stack app: a React (Vite + Tailwind CSS) single-page frontend talking to an Express REST API backed by MongoDB, with JWT authentication in an HTTP-only cookie. Each user only has access to their own farm data.
+
+> Version 2 migrated the original MEN/EJS app to MERN. The screenshots below show the original EJS interface.
 ## ScreenShots
 
 <img width="1917" height="876" alt="Welcome page Screenshots" src="https://github.com/user-attachments/assets/d91c39d7-5063-4ede-b337-866037bc0891" />
@@ -46,6 +48,13 @@ FarmTrack is a farm management web app that lets farmers organize their animals 
 - As a user, I cannot see or manage another user's structures, animals, or log entries.
 - As a guest, I cannot create, edit, or delete any data.
 
+### Analytics, search, bulk actions and export
+- As a user, I can see herd population over time, health status and species breakdowns, and revenue vs expenses on a dashboard.
+- As a user, I can instantly filter animals by text, health status, species, structure and birthdate range.
+- As a user, I can select several animals and move them to another structure or update their health status in one action.
+- As a user, I can export animals, history logs and a health report as CSV, or print a clean report.
+- As a user, I can switch between light and dark mode.
+
 ## ERD
 
 <img width="825" height="650" alt="erd" src="https://github.com/user-attachments/assets/7d3ca613-55fc-4381-a4bd-976f9454ee27" />
@@ -58,19 +67,69 @@ FarmTrack is a farm management web app that lets farmers organize their animals 
 
 ## Technologies
 
-- Node.js
-- Express
-- MongoDB / Mongoose
-- EJS
-- HTML / CSS / JavaScript
+- **Frontend:** React 19, Vite, Tailwind CSS v4, React Router, TanStack Query, Recharts, Lucide icons
+- **Backend:** Node.js, Express 5, MongoDB / Mongoose, JSON Web Tokens (HTTP-only cookie), bcrypt, helmet, express-rate-limit
+- **Tests:** `node:test` with an in-memory MongoDB
+
+## Project structure
+
+```
+farm-track/
+├── backend/
+│   ├── src/
+│   │   ├── config/        env + database connection
+│   │   ├── models/        User, Structure, Animal, LogEntry
+│   │   ├── middleware/    auth (JWT cookie), error handler, id validation, rate limit
+│   │   ├── controllers/   auth, structures, animals (+ bulk), logs, analytics, exports
+│   │   ├── routes/        one router per resource
+│   │   ├── utils/         ownership checks, filters, CSV, helpers
+│   │   ├── app.js         Express app
+│   │   ├── server.js      entry point
+│   │   └── seed.js        demo data
+│   └── test/              API tests
+└── frontend/
+    └── src/
+        ├── lib/           api client, constants, formatters
+        ├── context/       auth, theme, toasts
+        ├── hooks/         TanStack Query hooks, debounce
+        ├── components/    ui kit, layout, animals, logs, structures, charts
+        └── pages/         Dashboard, Structures, Animals, AnimalDetail, Reports, auth
+```
+
+## Getting started
+
+```bash
+npm run install:all
+cp backend/.env.example backend/.env   # then set MONGODB_URI and JWT_SECRET
+npm run seed                           # optional: demo / demo1234 with a year of data
+npm run dev:api                        # API on http://localhost:3000
+npm run dev:web                        # app on http://localhost:5173 (proxies /api)
+npm test                               # backend API tests
+```
+
+## REST API
+
+All routes except `/api/auth/signup|login|logout` require the auth cookie. Every query is scoped to the signed-in user, so another user's ids return 404.
+
+| Method | Route | Purpose |
+| --- | --- | --- |
+| POST | `/api/auth/signup`, `/login`, `/logout` | Session lifecycle |
+| GET | `/api/auth/me` | Current user |
+| GET/POST | `/api/structures` | List (with animal counts) / create |
+| GET/PUT/DELETE | `/api/structures/:id` | Show with animals / update / delete with cascade |
+| GET/POST | `/api/animals` | List with filters (`q`, `status`, `species`, `structure`, `from`, `to`, `dateField`, `sort`, `order`) / create |
+| GET/PUT/DELETE | `/api/animals/:id` | Show / update / delete with logs |
+| POST | `/api/animals/bulk/move`, `/bulk/status`, `/bulk/delete` | Batch operations on `{ ids, ... }` |
+| GET/POST | `/api/animals/:animalId/logs` | An animal's history / add entry |
+| GET | `/api/logs` | Recent activity across animals |
+| PUT/DELETE | `/api/logs/:id` | Update / delete entry |
+| GET | `/api/analytics/summary` | Dashboard totals, trends and distributions |
+| GET | `/api/export/animals.csv`, `/logs.csv`, `/health-report.csv` | CSV downloads |
 
 ## Future plans
 
-- **Analytics Dashboard:** Implement visual graphs/charts tracking herd count changes, health trends, and financial metrics over time.
-- **Search & Filtering:** Allow filtering animals by health status, species, or purchase/sale date ranges across all structures.
-- **Export Data (CSV/PDF):** Enable users to export animal history logs and health reports for veterinary or compliance records.
 - **Alerts & Reminders:** Set up automated notifications for upcoming vaccinations, routine checkups, or expected births.
-- **Batch Operations:** Add bulk actions to assign multiple animals to a structure or update health statuses simultaneously.
+- **PDF export** of health reports, and photo attachments per animal.
 
 ## References
 
